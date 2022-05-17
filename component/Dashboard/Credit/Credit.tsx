@@ -10,19 +10,27 @@ const IncomingSchema = Yup.object().shape({
   amount: Yup.number().required("Amount is required")
 });
 
-export const Incoming = () => {
+export const Credit = ({ addTransaction }: any) => {
+  const initialValues = {
+    id: null,
+    title: "",
+    date: "",
+    status: "Credited",
+    amount: "",
+  };
   return (
     <React.Fragment>
       <Col lg={6}>
         <Card outline color="success" className="border">
           <CardBody>
-            <CardTitle className="text-success">Incoming</CardTitle>
+            <CardTitle className="text-success">Credit</CardTitle>
             <Formik
-              initialValues={{ title: "", date: "", amount: "", status: "incoming" }}
+              initialValues={initialValues}
               validationSchema={IncomingSchema}
               validateOnChange={true}
               enableReinitialize={true}
               onSubmit={async (values: any) => {
+                addTransaction(values);
                 console.log(values);
               }}
             >

@@ -9,18 +9,19 @@ const OutgoingSchema = Yup.object().shape({
   date: Yup.string().required("Date is required"),
   amount: Yup.number().required("Amount is required")
 });
-export const Outgoing = () => {
+export const Debit = ({ addTransaction }: any) => {
   return (
     <Col lg={6}>
       <Card outline color="danger" className="border">
         <CardBody>
-          <CardTitle className="text-danger">Outgoing</CardTitle>
+          <CardTitle className="text-danger">Debit</CardTitle>
           <Formik
-            initialValues={{ title: "", date: "", amount: "", status: "outgoing" }}
+            initialValues={{ title: "", date: "", status: "Debited", amount: "" }}
             validationSchema={OutgoingSchema}
             validateOnChange={true}
             enableReinitialize={true}
             onSubmit={async (values: any) => {
+              addTransaction(values);
               console.log(values);
             }}
           >

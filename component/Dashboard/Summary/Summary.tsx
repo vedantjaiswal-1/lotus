@@ -1,8 +1,7 @@
 import React from "react";
 import { Card, CardBody, CardTitle, Badge, Button } from "reactstrap";
 
-
-export const Summary = ({transaction}: any) => {
+export const Summary = ({ transaction, sumOfCredit, sumOfDebit }: any) => {
   return (
     <React.Fragment>
       <Card outline color="secondary" className="border">
@@ -16,7 +15,8 @@ export const Summary = ({transaction}: any) => {
                   <th>Title</th>
                   <th>Date</th>
                   <th>Status</th>
-                  <th>Amount</th>
+                  <th>Credit</th>
+                  <th>Debit</th>
                 </tr>
               </thead>
               <tbody>
@@ -26,11 +26,25 @@ export const Summary = ({transaction}: any) => {
                       <td>{index + 1}</td>
                       <td>{item?.title}</td>
                       <td>{item?.date}</td>
-                      <td><Badge color={item?.status == "incoming" ? "success" : "danger"}>{item?.status}</Badge></td>
-                      <td>{item?.amount}</td>
+                      <td>
+                        <Badge color={item?.status == "Credited" ? "success" : "danger"}>{item?.status}</Badge>
+                      </td>
+                      <td>{item?.status == "Credited" ? item?.amount : null}</td>
+                      <td>{item?.status == "Debited" ? item?.amount : null}</td>
                     </tr>
                   );
                 })}
+                <tr>
+                  <td colSpan={4}>
+                    <strong>sum</strong>
+                  </td>
+                  <td>
+                    <strong>{sumOfCredit}</strong>
+                  </td>
+                  <td>
+                    <strong>{sumOfDebit}</strong>
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
