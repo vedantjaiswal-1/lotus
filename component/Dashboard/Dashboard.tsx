@@ -16,7 +16,9 @@ export const Dashboard = () => {
         setTransaction(response);
       })
       .catch((error: any) => {
+        ToastUtil.error(error.message);
         console.log(error);
+        error.response.status == 401 ? (window.location.href = "/") : null;
       });
   };
 
@@ -28,10 +30,10 @@ export const Dashboard = () => {
     TransactionService.AddTransaction(data)
       .then((response: any) => {
         loadTransaction();
-        ToastUtil.success("Transaction Success")
+        ToastUtil.success("Transaction Success");
       })
       .catch((error: any) => {
-        console.log(error);
+        ToastUtil.error(error.message);
       });
   };
 
