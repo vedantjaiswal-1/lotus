@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const employeeSchema = new mongoose.Schema(
+const TransactionSchema = new mongoose.Schema(
   {
     title: {
       type: String,
@@ -29,4 +29,4 @@ const employeeSchema = new mongoose.Schema(
   }
 );
 
-export default mongoose.models.Employee || mongoose.model("Employee", employeeSchema);
+export default mongoose.models.Transaction || mongoose.model("Transaction", TransactionSchema);

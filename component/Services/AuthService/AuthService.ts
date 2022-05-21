@@ -2,7 +2,7 @@ import axios from "axios";
 
 export default class AuthService {
   static login = (user: any) => {
-    return axios.post(`http://localhost:3000/api/login/`, user, {
+    return axios.post(`${window.location.origin}/api/login/`, user, {
       headers: {}
     });
   };
