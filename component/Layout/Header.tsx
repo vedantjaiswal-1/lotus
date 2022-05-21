@@ -1,8 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import {
-  Collapse,
   DropdownItem,
   DropdownMenu,
   DropdownToggle,
@@ -10,13 +8,10 @@ import {
   Navbar,
   NavbarBrand,
   NavbarText,
-  NavbarToggler,
-  NavItem,
-  NavLink,
   UncontrolledDropdown
 } from "reactstrap";
 
-import profile from "../../public/images/avatar-1.jpg";
+import AuthService from "../Services/AuthService/AuthService";
 export const Header = () => {
   return (
     <React.Fragment>
@@ -28,12 +23,21 @@ export const Header = () => {
         <Nav>
           <NavbarText>
             <UncontrolledDropdown inNavbar nav>
-              <DropdownToggle caret nav>
-                Admin
+              <DropdownToggle caret nav suppressHydrationWarning>
+                {AuthService.getUserName()}
               </DropdownToggle>
-              <DropdownMenu end >
+              <DropdownMenu end>
                 <DropdownItem>
-                  <Link href="/">Logout</Link>
+                  <Link href="/">
+                    <a
+                      onClick={() => {
+                        localStorage.removeItem("user");
+                        window.location.href = "/";
+                      }}
+                    >
+                      Logout
+                    </a>
+                  </Link>
                 </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>

@@ -12,7 +12,6 @@ const IncomingSchema = Yup.object().shape({
 
 export const Credit = ({ addTransaction }: any) => {
   const initialValues = {
-    id: null,
     title: "",
     date: "",
     status: "Credited",

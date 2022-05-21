@@ -10,6 +10,8 @@ import lotus from "../../public/images/lotus.png";
 import profileImg from "../../public/images/profile-img.png";
 
 import Image from "next/image";
+import AuthService from "../Services/AuthService/AuthService";
+import { ToastUtil } from "../../shared/utils/toast";
 
 const LoginFormSchema = Yup.object().shape({
   email: Yup.string().required("Please enter the email.").email("Invalid Email"),
@@ -55,8 +57,15 @@ export const Login = () => {
                       validateOnChange={true}
                       enableReinitialize={true}
                       onSubmit={async (values: any) => {
-                        console.log(values);
-                        window.location.href = '/dashboard';
+                        AuthService.login(values)
+                          .then((response: any) => {
+                            localStorage.setItem("user", JSON.stringify(response.data));
+                            window.location.href = "/dashboard";
+                            ToastUtil.success("Login Successful");
+                          })
+                          .catch((error: any) => {
+                            console.log(error);
+                          });
                       }}
                     >
                       {({ values, errors, touched, handleChange }) => (

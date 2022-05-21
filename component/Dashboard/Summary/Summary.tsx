@@ -1,3 +1,4 @@
+import moment from "moment";
 import React from "react";
 import { Card, CardBody, CardTitle, Badge, Button } from "reactstrap";
 
@@ -20,23 +21,32 @@ export const Summary = ({ transaction, sumOfCredit, sumOfDebit }: any) => {
                 </tr>
               </thead>
               <tbody>
-                {transaction?.map((item: any, index: number) => {
-                  return (
-                    <tr key={item?.id}>
-                      <td>{index + 1}</td>
-                      <td>{item?.title}</td>
-                      <td>{item?.date}</td>
-                      <td>
-                        <Badge color={item?.status == "Credited" ? "success" : "danger"}>{item?.status}</Badge>
-                      </td>
-                      <td>{item?.status == "Credited" ? item?.amount : null}</td>
-                      <td>{item?.status == "Debited" ? item?.amount : null}</td>
-                    </tr>
-                  );
-                })}
+                {transaction.length > 0 ? (
+                  <>
+                    {transaction?.map((item: any, index: number) => {
+                      return (
+                        <tr key={item?._id}>
+                          <td>{index + 1}</td>
+                          <td>{item?.title}</td>
+                          <td>{moment(item?.date).format("LL")}</td>
+                          <td>
+                            <Badge color={item?.status == "Credited" ? "success" : "danger"}>{item?.status}</Badge>
+                          </td>
+                          <td>{item?.status == "Credited" ? item?.amount : null}</td>
+                          <td>{item?.status == "Debited" ? item?.amount : null}</td>
+                        </tr>
+                      );
+                    })}
+                  </>
+                ) : (
+                  <tr>
+                    <td colSpan={3}></td>
+                    <td>Empty</td>
+                  </tr>
+                )}
                 <tr>
                   <td colSpan={4}>
-                    <strong>sum</strong>
+                    <strong>Total</strong>
                   </td>
                   <td>
                     <strong>{sumOfCredit}</strong>
