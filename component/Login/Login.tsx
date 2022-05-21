@@ -64,7 +64,7 @@ export const Login = () => {
                             ToastUtil.success("Login Successful");
                           })
                           .catch((error: any) => {
-                            console.log(error);
+                            ToastUtil.error("Incorrect Email and password")
                           });
                       }}
                     >
@@ -105,14 +105,14 @@ export const Login = () => {
                             </button>
                           </div>
 
-                          <div className="mt-4 text-center">
+                          {/* <div className="mt-4 text-center">
                             <Link href="/forgot-password">
                               <div className="text-muted">
                                 <i className="mdi mdi-lock me-1" />
                                 Forgot your password?
                               </div>
                             </Link>
-                          </div>
+                          </div> */}
                         </Form>
                       )}
                     </Formik>
