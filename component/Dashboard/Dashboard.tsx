@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Container, Row, Button } from "reactstrap";
 import { ToastUtil } from "../../shared/utils/toast";
 import { Header } from "../Layout/Header";
@@ -7,10 +8,11 @@ import { Credit } from "./Credit/Credit";
 import { Debit } from "./Debit/Debit";
 import { Summary } from "./Summary/Summary";
 
-export const Dashboard = () => {
+export const Dashboard = (props: any) => {
   const [transaction, setTransaction] = useState([]);
   const [credit, setCredit] = useState(false);
   const [debit, setDebit] = useState(false);
+  const [t, i18n] = useTranslation();
 
   const loadTransaction = () => {
     TransactionService.listTransaction()
@@ -59,10 +61,10 @@ export const Dashboard = () => {
         <Container>
           <div className="mb-4 button-items">
             <Button color="success" outline onClick={() => setCredit(!credit)}>
-              Credit
+              {t('Add Credit')}
             </Button>{" "}
             <Button color="danger" outline onClick={() => setDebit(!debit)}>
-              Debit
+              {t('Add Debit')}
             </Button>
           </div>
           <Row>

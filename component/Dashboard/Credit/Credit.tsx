@@ -4,6 +4,7 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { InputField } from "../../../core/FormField/InputField";
 import AuthService from "../../Services/AuthService/AuthService";
+import { useTranslation } from "react-i18next";
 
 const IncomingSchema = Yup.object().shape({
   title: Yup.string().required("Title is required"),
@@ -19,13 +20,14 @@ export const Credit = ({ addTransaction, setCredit }: any) => {
     amount: "",
     created_by: AuthService.getUserName()
   };
+  const [t, i18n] = useTranslation();
 
   return (
     <React.Fragment>
       <Col lg={6}>
         <Card outline color="success" className="border">
           <CardBody>
-            <CardTitle className="text-success">Credit</CardTitle>
+            <CardTitle className="text-success">{t("Add Credit")}</CardTitle>
             <Formik
               initialValues={initialValues}
               validationSchema={IncomingSchema}
@@ -44,7 +46,7 @@ export const Credit = ({ addTransaction, setCredit }: any) => {
                     <div className="form-group">
                       <InputField
                         name="title"
-                        label="Title"
+                        label={t("Title")}
                         placeholder="Enter title"
                         type="text"
                         data-id="title"
@@ -60,7 +62,7 @@ export const Credit = ({ addTransaction, setCredit }: any) => {
                     <div className="form-group">
                       <InputField
                         name="date"
-                        label="Date"
+                        label={t("Date")}
                         placeholder="Enter Date"
                         type="Date"
                         data-id="date"
@@ -76,7 +78,7 @@ export const Credit = ({ addTransaction, setCredit }: any) => {
                     <div className="form-group">
                       <InputField
                         name="amount"
-                        label="Amount"
+                        label={t("Amount")}
                         placeholder="Enter amount"
                         type="number"
                         data-id="amount"
@@ -90,7 +92,7 @@ export const Credit = ({ addTransaction, setCredit }: any) => {
 
                   <div className="d-grid">
                     <Button color="primary" type="submit">
-                      Submit
+                      {t("Submit")}
                     </Button>
                   </div>
                 </Form>
