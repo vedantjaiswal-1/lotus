@@ -15,10 +15,14 @@ export default class TransactionService {
   };
 
   static AddTransaction = (data: any) => {
-    return axios.post(`${window.location.origin}/api/transaction/`, data, {
-        
-    }).then((response: any) => {
-      return response.data;
-    });
+    return axios
+      .post(`${window.location.origin}/api/transaction/`, data, {
+        headers: {
+          Authorization: getToken()
+        }
+      })
+      .then((response: any) => {
+        return response.data;
+      });
   };
 }

@@ -15,6 +15,7 @@ export const Summary = ({ transaction, sumOfCredit, sumOfDebit }: any) => {
                   <th>Sr. No</th>
                   <th>Title</th>
                   <th>Date</th>
+                  <th>Created By</th>
                   <th>Status</th>
                   <th>Credit</th>
                   <th>Debit</th>
@@ -29,11 +30,12 @@ export const Summary = ({ transaction, sumOfCredit, sumOfDebit }: any) => {
                           <td>{index + 1}</td>
                           <td>{item?.title}</td>
                           <td>{moment(item?.date).format("LL")}</td>
+                          <td>{item?.created_by}</td>
                           <td>
                             <Badge color={item?.status == "Credited" ? "success" : "danger"}>{item?.status}</Badge>
                           </td>
-                          <td>{item?.status == "Credited" ? item?.amount : null}</td>
-                          <td>{item?.status == "Debited" ? item?.amount : null}</td>
+                          <td>{item?.status == "Credited" ? (item?.amount).toLocaleString(undefined, { maximumFractionDigits: 2 }) : null}</td>
+                          <td>{item?.status == "Debited" ? (item?.amount).toLocaleString(undefined, { maximumFractionDigits: 2 }) : null}</td>
                         </tr>
                       );
                     })}
@@ -41,18 +43,26 @@ export const Summary = ({ transaction, sumOfCredit, sumOfDebit }: any) => {
                 ) : (
                   <tr>
                     <td colSpan={3}></td>
-                    <td>Empty</td>
+                    <td>No data found</td>
                   </tr>
                 )}
                 <tr>
-                  <td colSpan={4}>
+                  <td colSpan={5}>
                     <strong>Total</strong>
                   </td>
                   <td>
-                    <strong>{sumOfCredit}</strong>
+                    <strong>{(sumOfCredit).toLocaleString(undefined, { maximumFractionDigits: 2 })}</strong>
                   </td>
                   <td>
-                    <strong>{sumOfDebit}</strong>
+                    <strong>{(sumOfDebit).toLocaleString(undefined, { maximumFractionDigits: 2 })}</strong>
+                  </td>
+                </tr>
+                <tr>
+                  <td colSpan={6}>
+                    <strong>Total Amount</strong>
+                  </td>
+                  <td>
+                    <h5>{(sumOfCredit - sumOfDebit).toLocaleString(undefined, { maximumFractionDigits: 2 })}</h5>
                   </td>
                 </tr>
               </tbody>

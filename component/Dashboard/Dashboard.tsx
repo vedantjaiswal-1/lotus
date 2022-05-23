@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container, Row } from "reactstrap";
+import { Container, Row, Button } from "reactstrap";
 import { ToastUtil } from "../../shared/utils/toast";
 import { Header } from "../Layout/Header";
 import TransactionService from "../Services/TransactionService/TransactionService";
@@ -9,6 +9,8 @@ import { Summary } from "./Summary/Summary";
 
 export const Dashboard = () => {
   const [transaction, setTransaction] = useState([]);
+  const [credit, setCredit] = useState(false);
+  const [debit, setDebit] = useState(false);
 
   const loadTransaction = () => {
     TransactionService.listTransaction()
@@ -55,9 +57,17 @@ export const Dashboard = () => {
       <Header></Header>
       <div className="page-content">
         <Container>
+          <div className="mb-4 button-items">
+            <Button color="success" outline onClick={() => setCredit(!credit)}>
+              Credit
+            </Button>{" "}
+            <Button color="danger" outline onClick={() => setDebit(!debit)}>
+              Debit
+            </Button>
+          </div>
           <Row>
-            <Credit addTransaction={addTransaction} />
-            <Debit addTransaction={addTransaction} />
+            {credit ? <Credit addTransaction={addTransaction} setCredit={setCredit} /> : null}
+            {debit ? <Debit addTransaction={addTransaction} setDebit={setDebit} /> : null}
           </Row>
 
           <Summary transaction={transaction} sumOfCredit={sumOfCredit} sumOfDebit={sumOfDebit} />
