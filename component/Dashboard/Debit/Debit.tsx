@@ -3,25 +3,36 @@ import { Button, Card, CardBody, CardTitle, Col } from "reactstrap";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { InputField } from "../../../core/FormField/InputField";
+import AuthService from "../../Services/AuthService/AuthService";
 
 const OutgoingSchema = Yup.object().shape({
   title: Yup.string().required("Title is required"),
   date: Yup.string().required("Date is required"),
   amount: Yup.number().required("Amount is required")
 });
-export const Debit = ({ addTransaction }: any) => {
+export const Debit = ({ addTransaction, setDebit }: any) => {
+  const initialValues = {
+    title: "",
+    date: "",
+    status: "Debited",
+    amount: "",
+    created_by: AuthService.getUserName()
+  };
+
   return (
     <Col lg={6}>
       <Card outline color="danger" className="border">
         <CardBody>
           <CardTitle className="text-danger">Debit</CardTitle>
           <Formik
-            initialValues={{ title: "", date: "", status: "Debited", amount: "" }}
+            initialValues={initialValues}
             validationSchema={OutgoingSchema}
             validateOnChange={true}
             enableReinitialize={true}
-            onSubmit={async (values: any) => {
+            onSubmit={async (values: any, actions: any) => {
               addTransaction(values);
+              actions.resetForm();
+              setDebit(false);
               console.log(values);
             }}
           >

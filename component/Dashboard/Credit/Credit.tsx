@@ -3,6 +3,7 @@ import { Button, Card, CardBody, CardTitle, Col } from "reactstrap";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { InputField } from "../../../core/FormField/InputField";
+import AuthService from "../../Services/AuthService/AuthService";
 
 const IncomingSchema = Yup.object().shape({
   title: Yup.string().required("Title is required"),
@@ -10,13 +11,15 @@ const IncomingSchema = Yup.object().shape({
   amount: Yup.number().required("Amount is required")
 });
 
-export const Credit = ({ addTransaction }: any) => {
+export const Credit = ({ addTransaction, setCredit }: any) => {
   const initialValues = {
     title: "",
     date: "",
     status: "Credited",
     amount: "",
+    created_by: AuthService.getUserName()
   };
+
   return (
     <React.Fragment>
       <Col lg={6}>
@@ -28,8 +31,10 @@ export const Credit = ({ addTransaction }: any) => {
               validationSchema={IncomingSchema}
               validateOnChange={true}
               enableReinitialize={true}
-              onSubmit={async (values: any) => {
+              onSubmit={async (values: any, actions: any) => {
                 addTransaction(values);
+                actions.resetForm();
+                setCredit(false);
                 console.log(values);
               }}
             >

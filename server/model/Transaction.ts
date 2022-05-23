@@ -18,11 +18,10 @@ const TransactionSchema = new mongoose.Schema(
       type: String,
       required: true
     },
-    // user: {
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   required: true,
-    //   ref: "User"
-    // }
+    created_by: {
+      type: String,
+      required: true
+    }
   },
   {
     timestamps: true
