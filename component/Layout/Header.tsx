@@ -29,7 +29,7 @@ export const Header = () => {
   return (
     <React.Fragment>
       <Navbar color="white" expand="md" light fixed="top">
-        <NavbarBrand href="/">
+        <NavbarBrand href="/dashboard/">
           <h2>Lotus Inn</h2>
         </NavbarBrand>
 

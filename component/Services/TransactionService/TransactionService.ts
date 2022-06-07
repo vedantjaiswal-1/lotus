@@ -1,13 +1,14 @@
 import axios from "axios";
 import { getToken } from "../../../config";
+import { uuid } from "../../../pages/invoice/[id]";
 
 export default class TransactionService {
   static listTransaction = () => {
     return axios
       .get(`${window.location.origin}/api/transaction/`, {
         headers: {
-          Authorization: getToken()
-        }
+          Authorization: getToken(),
+        },
       })
       .then((response: any) => {
         return response.data;
@@ -18,8 +19,20 @@ export default class TransactionService {
     return axios
       .post(`${window.location.origin}/api/transaction/`, data, {
         headers: {
-          Authorization: getToken()
-        }
+          Authorization: getToken(),
+        },
+      })
+      .then((response: any) => {
+        return response.data;
+      });
+  };
+
+  static transactionById = (id: any) => {
+    return axios
+      .get(`${window.location.origin}/api/transaction/${id}/`, {
+        headers: {
+          Authorization: getToken(),
+        },
       })
       .then((response: any) => {
         return response.data;
