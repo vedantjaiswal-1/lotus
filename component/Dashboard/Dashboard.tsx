@@ -121,8 +121,11 @@ export const Dashboard = (props: any) => {
 
           <Summary
             transaction={transaction}
+            setTransaction={setTransaction}
             sumOfCredit={sumOfCredit}
             sumOfDebit={sumOfDebit}
+            listVendor={listVendor}
+            loadTransaction={loadTransaction}
           />
         </Container>
       </div>

@@ -38,4 +38,19 @@ export default class TransactionService {
         return response.data;
       });
   };
+
+  static transactionByDate = (start: any, end: any, title: any) => {
+    return axios
+      .get(
+        `${window.location.origin}/api/transaction/date?start=${start}&end=${end}&title=${title}`,
+        {
+          headers: {
+            Authorization: getToken(),
+          },
+        }
+      )
+      .then((response: any) => {
+        return response.data;
+      });
+  };
 }
