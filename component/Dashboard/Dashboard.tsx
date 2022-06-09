@@ -4,14 +4,18 @@ import { Container, Row, Button } from "reactstrap";
 import { ToastUtil } from "../../shared/utils/toast";
 import { Header } from "../Layout/Header";
 import TransactionService from "../Services/TransactionService/TransactionService";
+import VendorService from "../Services/VendorService/VendorService";
 import { Credit } from "./Credit/Credit";
 import { Debit } from "./Debit/Debit";
 import { Summary } from "./Summary/Summary";
+import { Vendor } from "./Vendor/Vendor";
 
 export const Dashboard = (props: any) => {
   const [transaction, setTransaction] = useState([]);
   const [credit, setCredit] = useState(false);
   const [debit, setDebit] = useState(false);
+  const [vendor, setVendor] = useState(false);
+  const [listVendor, setListVendor] = useState([]);
   const [t, i18n] = useTranslation();
 
   const loadTransaction = () => {
@@ -54,6 +58,31 @@ export const Dashboard = (props: any) => {
     sumOfDebit += DebitAmount;
   });
 
+  const loadVendor = () => {
+    VendorService.listVendor()
+      .then((response: any) => {
+        setListVendor(response);
+      })
+      .catch((error: any) => {
+        console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    loadVendor();
+  }, []);
+
+  const addVendor = (data: any) => {
+    VendorService.addVendor(data)
+      .then((response: any) => {
+        ToastUtil.success("Vendor Created Successfully");
+        loadVendor();
+      })
+      .catch((error: any) => {
+        ToastUtil.error("Unable to add vendor");
+      });
+  };
+
   return (
     <React.Fragment>
       <Header></Header>
@@ -61,18 +90,43 @@ export const Dashboard = (props: any) => {
         <Container>
           <div className="mb-4 button-items">
             <Button color="success" outline onClick={() => setCredit(!credit)}>
-              {t('Add Credit')}
+              {t("Add Credit")}
             </Button>{" "}
             <Button color="danger" outline onClick={() => setDebit(!debit)}>
-              {t('Add Debit')}
+              {t("Add Debit")}
+            </Button>{" "}
+            <Button color="primary" outline onClick={() => setVendor(!vendor)}>
+              {t("Add Vendor")}
             </Button>
           </div>
           <Row>
-            {credit ? <Credit addTransaction={addTransaction} setCredit={setCredit} /> : null}
-            {debit ? <Debit addTransaction={addTransaction} setDebit={setDebit} /> : null}
+            {credit ? (
+              <Credit
+                addTransaction={addTransaction}
+                setCredit={setCredit}
+                listVendor={listVendor}
+              />
+            ) : null}
+            {debit ? (
+              <Debit
+                addTransaction={addTransaction}
+                setDebit={setDebit}
+                listVendor={listVendor}
+              />
+            ) : null}
+            {vendor ? (
+              <Vendor addVendor={addVendor} setVendor={setVendor} />
+            ) : null}
           </Row>
 
-          <Summary transaction={transaction} sumOfCredit={sumOfCredit} sumOfDebit={sumOfDebit} />
+          <Summary
+            transaction={transaction}
+            setTransaction={setTransaction}
+            sumOfCredit={sumOfCredit}
+            sumOfDebit={sumOfDebit}
+            listVendor={listVendor}
+            loadTransaction={loadTransaction}
+          />
         </Container>
       </div>
     </React.Fragment>

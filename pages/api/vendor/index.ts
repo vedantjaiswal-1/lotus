@@ -1,7 +1,7 @@
 import nextConnect, { NextHandler } from "next-connect";
-const connectDb = require("../../../server/utils/ConnectDb");
 import { NextApiRequest, NextApiResponse } from "next";
-import Transaction from "../../../server/model/Transaction";
+import Vendor from "../../../server/model/Vendor";
+const connectDb = require("../../../server/utils/ConnectDb");
 
 connectDb();
 
@@ -10,8 +10,8 @@ const handler = nextConnect();
 handler
   .get(async (req: NextApiRequest, res: NextApiResponse, next: NextHandler) => {
     try {
-      const transactions = await Transaction.find({}).sort({_id: -1});
-      res.status(200).json(transactions);
+      const vendors = await Vendor.find({});
+      res.status(200).json(vendors);
     } catch (error) {
       res.status(500).json({ msg: "Server Error" });
     }
@@ -20,9 +20,9 @@ handler
   .post(
     async (req: NextApiRequest, res: NextApiResponse, next: NextHandler) => {
       try {
-        const transaction = new Transaction(req.body);
-        await transaction.save();
-        res.status(201).json(transaction);
+        const vendor = new Vendor(req.body);
+        await vendor.save();
+        res.status(201).json(vendor);
       } catch (error) {
         console.log(error);
         res.status(500).json({ msg: "Server Error" });

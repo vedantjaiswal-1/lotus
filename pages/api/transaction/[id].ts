@@ -16,6 +16,7 @@ handler
       res.status(500).json({ msg: 'Server Error' });
     }
   })
+  
   .put(async (req: NextApiRequest, res: NextApiResponse, next: NextHandler) => {
     try {
       const transaction = await Transaction.findOne({ _id: req.query.id });
