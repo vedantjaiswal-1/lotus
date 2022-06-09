@@ -1,6 +1,6 @@
 import moment from "moment";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Card,
@@ -33,11 +33,32 @@ export const Summary = ({
   loadTransaction,
 }: any) => {
   const [t, i18n] = useTranslation();
-  const [query, setQuery] = useState("");
+  const [vendorNames, setVendorNames] = useState([]);
+
   const initialValues = {
     title: "",
     start: "",
     end: "",
+  };
+
+  useEffect(() => {
+    let vendorNames = transaction?.map((item: any) => {
+      return item?.title;
+    });
+
+    vendorNames = Array.from(new Set(vendorNames));
+
+    vendorNames = vendorNames.map((item: string, index: number) => {
+      return {
+        value: index,
+        label: item,
+      };
+    });
+    setVendorNames(vendorNames);
+  }, [transaction]);
+
+  const printInvoice = () => {
+    window.print();
   };
   return (
     <React.Fragment>
@@ -51,14 +72,6 @@ export const Summary = ({
             ></i>
           </CardTitle>
           <Row>
-            {/* <Col lg={3}>
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Search..."
-                onChange={(event) => setQuery(event.target.value)}
-              />
-            </Col> */}
             <Formik
               initialValues={initialValues}
               validationSchema={IncomingSchema}
@@ -95,12 +108,7 @@ export const Summary = ({
                       <div className="form-group">
                         <Label>{t("Title")}</Label>
                         <Select
-                          options={listVendor?.map((item: any) => {
-                            return {
-                              value: item?._id,
-                              label: item?.name,
-                            };
-                          })}
+                          options={vendorNames}
                           name="title"
                           onChange={(value: any) => {
                             setFieldValue("title", value.label);
@@ -148,10 +156,10 @@ export const Summary = ({
                       </div>
                     </Col>
                     <Col>
-                    <div className="align-self-end">
-                      <Button className="mt-4 w-md" type="submit">
-                        Search
-                      </Button>
+                      <div className="align-self-end">
+                        <Button className="mt-4 w-md" type="submit">
+                          Search
+                        </Button>
                       </div>
                     </Col>
                   </Row>
@@ -175,55 +183,45 @@ export const Summary = ({
               <tbody>
                 {transaction.length > 0 ? (
                   <>
-                    {transaction
-                      // ?.filter((item: any) => {
-                      //   if (query == "") {
-                      //     return item;
-                      //   } else if (
-                      //     item.title.toLowerCase().includes(query.toLowerCase())
-                      //   ) {
-                      //     return item;
-                      //   }
-                      // })
-                      ?.map((item: any, index: number) => {
-                        return (
-                          <tr key={item?._id}>
-                            <td>{index + 1}</td>
-                            <td>
-                              <Link href={`/invoice/${item._id}`}>
-                                {item?.title}
-                              </Link>
-                            </td>
-                            <td>{moment(item?.date).format("LL")}</td>
-                            <td>{item?.created_by}</td>
-                            <td>
-                              <Badge
-                                color={
-                                  item?.status == "Credited"
-                                    ? "success"
-                                    : "danger"
-                                }
-                              >
-                                {t(item?.status)}
-                              </Badge>
-                            </td>
-                            <td>
-                              {item?.status == "Credited"
-                                ? (item?.amount).toLocaleString(undefined, {
-                                    maximumFractionDigits: 2,
-                                  })
-                                : null}
-                            </td>
-                            <td>
-                              {item?.status == "Debited"
-                                ? (item?.amount).toLocaleString(undefined, {
-                                    maximumFractionDigits: 2,
-                                  })
-                                : null}
-                            </td>
-                          </tr>
-                        );
-                      })}
+                    {transaction?.map((item: any, index: number) => {
+                      return (
+                        <tr key={item?._id}>
+                          <td>{index + 1}</td>
+                          <td>
+                            {/* <Link href={`/invoice/${item._id}`}> */}
+                              {item?.title}
+                            {/* </Link> */}
+                          </td>
+                          <td>{moment(item?.date).format("LL")}</td>
+                          <td>{item?.created_by}</td>
+                          <td>
+                            <Badge
+                              color={
+                                item?.status == "Credited"
+                                  ? "success"
+                                  : "danger"
+                              }
+                            >
+                              {t(item?.status)}
+                            </Badge>
+                          </td>
+                          <td>
+                            {item?.status == "Credited"
+                              ? (item?.amount).toLocaleString(undefined, {
+                                  maximumFractionDigits: 2,
+                                })
+                              : null}
+                          </td>
+                          <td>
+                            {item?.status == "Debited"
+                              ? (item?.amount).toLocaleString(undefined, {
+                                  maximumFractionDigits: 2,
+                                })
+                              : null}
+                          </td>
+                        </tr>
+                      );
+                    })}
                   </>
                 ) : (
                   <tr>

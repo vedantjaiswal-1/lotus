@@ -73,22 +73,17 @@ export const Credit = ({ addTransaction, setCredit, listVendor }: any) => {
                 <Form>
                   <div className="mb-3">
                     <div className="form-group">
-                      <Label>{t("Title")}</Label>
-                      <Select
-                        options={listVendor?.map((item: any) => {
-                          return {
-                            value: item?._id,
-                            label: item?.name,
-                          };
-                        })}
+                      <InputField
                         name="title"
-                        onChange={(value: any) => {
-                          setFieldValue("title", value.label);
-                        }}
+                        label={t("title")}
+                        placeholder="Enter Title"
+                        type="text"
+                        data-id="title"
+                        errors={errors}
+                        values={values}
+                        touched={touched}
+                        handleChange={handleChange}
                       />
-                      {errors.title && touched.title ? (
-                        <div className="text-danger small">{errors.title}</div>
-                      ) : null}
                     </div>
                   </div>
 
