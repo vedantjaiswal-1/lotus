@@ -48,12 +48,12 @@ export const Dashboard = (props: any) => {
   let sumOfCredit = 0;
   let sumOfDebit = 0;
 
-  transaction.forEach((item: any) => {
+  transaction?.forEach((item: any) => {
     const CreditAmount = item?.status == "Credited" ? item?.amount : null;
     sumOfCredit += CreditAmount;
   });
 
-  transaction.forEach((item: any) => {
+  transaction?.forEach((item: any) => {
     const DebitAmount = item?.status == "Debited" ? item?.amount : null;
     sumOfDebit += DebitAmount;
   });
@@ -88,7 +88,7 @@ export const Dashboard = (props: any) => {
       <Header></Header>
       <div className="page-content">
         <Container>
-          <div className="mb-4 button-items">
+          <div className="mb-4 button-items no-printme">
             <Button color="success" outline onClick={() => setCredit(!credit)}>
               {t("Add Credit")}
             </Button>{" "}
