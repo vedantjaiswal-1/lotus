@@ -33,38 +33,49 @@ export const Summary = ({
   loadTransaction,
 }: any) => {
   const [t, i18n] = useTranslation();
-  const [vendorNames, setVendorNames] = useState([]);
-
+  const [titleName, setTitleName] = useState<any>([]);
   const initialValues = {
     title: "",
     start: "",
     end: "",
   };
 
+  const fetchTransaction = () => {
+    TransactionService.listTransaction()
+      .then((response: any) => {
+        const title = response.map((item: any) => {
+          return item?.title;
+        });
+
+        const titleList = Array.from(new Set(title));
+
+        const titles = titleList.map((item: any, index: number) => {
+          return {
+            value: index,
+            label: item,
+          };
+        });
+
+        setTitleName(titles);
+      })
+      .catch((error: any) => {
+        console.log(error);
+      });
+  };
+
   useEffect(() => {
-    let vendorNames = transaction?.map((item: any) => {
-      return item?.title;
-    });
-
-    vendorNames = Array.from(new Set(vendorNames));
-
-    vendorNames = vendorNames.map((item: string, index: number) => {
-      return {
-        value: index,
-        label: item,
-      };
-    });
-    setVendorNames(vendorNames);
-  }, [transaction]);
+    fetchTransaction();
+  }, []);
 
   const printInvoice = () => {
     window.print();
   };
+
   return (
     <React.Fragment>
       <Card outline color="secondary" className="border">
         <CardBody>
-          <CardTitle className="mb-4">
+          <CardTitle className="mb-4 no-printme">
             {t("Latest Transaction")}{" "}
             <i
               className="mdi mdi-refresh float-end text-primary btn btn-light"
@@ -78,11 +89,7 @@ export const Summary = ({
               validateOnChange={true}
               enableReinitialize={true}
               onSubmit={async (values: any, actions: any) => {
-                TransactionService.transactionByDate(
-                  values.start,
-                  values.end,
-                  values.title
-                )
+                TransactionService.transactionByDate(values)
                   .then((response: any) => {
                     setTransaction(response);
                   })
@@ -101,14 +108,15 @@ export const Summary = ({
                 handleChange,
                 setFieldValue,
                 handleBlur,
+                isSubmitting,
               }) => (
                 <Form>
-                  <Row>
+                  <Row className="no-printme">
                     <Col lg={2}>
                       <div className="form-group">
                         <Label>{t("Title")}</Label>
                         <Select
-                          options={vendorNames}
+                          options={titleName}
                           name="title"
                           onChange={(value: any) => {
                             setFieldValue("title", value.label);
@@ -157,7 +165,14 @@ export const Summary = ({
                     </Col>
                     <Col>
                       <div className="align-self-end">
-                        <Button className="mt-4 w-md" type="submit">
+                        <Button
+                          className="mt-4 w-md"
+                          type="submit"
+                          color="primary"
+                          disabled={
+                            !(values.title || (values.start && values.end))
+                          }
+                        >
                           Search
                         </Button>
                       </div>
@@ -168,6 +183,13 @@ export const Summary = ({
             </Formik>
           </Row>
           <div className="table-responsive">
+            <div className="d-print-none">
+              <div className="float-end">
+                <div className="btn btn-success mb-4" onClick={printInvoice}>
+                  <i className="fa fa-print" /> <strong>Print</strong>
+                </div>
+              </div>
+            </div>
             <table className="table table-centered table-nowrap mb-0">
               <thead className="thead-light">
                 <tr>
@@ -189,7 +211,7 @@ export const Summary = ({
                           <td>{index + 1}</td>
                           <td>
                             {/* <Link href={`/invoice/${item._id}`}> */}
-                              {item?.title}
+                            {item?.title}
                             {/* </Link> */}
                           </td>
                           <td>{moment(item?.date).format("LL")}</td>

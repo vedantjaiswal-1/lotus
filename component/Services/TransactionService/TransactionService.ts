@@ -39,10 +39,10 @@ export default class TransactionService {
       });
   };
 
-  static transactionByDate = (start: any, end: any, title: any) => {
+  static transactionByDate = (values: any) => {
     return axios
       .get(
-        `${window.location.origin}/api/transaction/date?start=${start}&end=${end}&title=${title}`,
+        `${window.location.origin}/api/transaction/date?title=${values.title}&start=${values.start}&end=${values.end}`,
         {
           headers: {
             Authorization: getToken(),

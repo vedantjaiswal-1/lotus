@@ -14,10 +14,11 @@ import AuthService from "../Services/AuthService/AuthService";
 import { ToastUtil } from "../../shared/utils/toast";
 
 const LoginFormSchema = Yup.object().shape({
-  email: Yup.string().required("Please enter the email.").email("Invalid Email"),
-  password: Yup.string().min(8).required("Please enter the password.")
+  email: Yup.string()
+    .required("Please enter the email.")
+    .email("Invalid Email"),
+  password: Yup.string().min(8).required("Please enter the password."),
 });
-
 export const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   return (
@@ -36,7 +37,11 @@ export const Login = () => {
                       </div>
                     </Col>
                     <Col className="col-5 align-self-end">
-                      <Image src={profileImg} alt="profile" className="img-fluid"></Image>
+                      <Image
+                        src={profileImg}
+                        alt="profile"
+                        className="img-fluid"
+                      ></Image>
                     </Col>
                   </Row>
                 </div>
@@ -45,7 +50,11 @@ export const Login = () => {
                     <Link href="/" className="auth-logo-light">
                       <div className="avatar-md profile-user-wid mb-4">
                         <span className="avatar-title rounded-circle bg-light">
-                          <Image src={lotus} alt="lotus" className="rounded-circle"></Image>
+                          <Image
+                            src={lotus}
+                            alt="lotus"
+                            className="rounded-circle"
+                          ></Image>
                         </span>
                       </div>
                     </Link>
@@ -59,12 +68,15 @@ export const Login = () => {
                       onSubmit={async (values: any) => {
                         AuthService.login(values)
                           .then((response: any) => {
-                            localStorage.setItem("user", JSON.stringify(response.data));
+                            localStorage.setItem(
+                              "user",
+                              JSON.stringify(response.data)
+                            );
                             window.location.href = "/dashboard";
                             ToastUtil.success("Login Successful");
                           })
                           .catch((error: any) => {
-                            ToastUtil.error("Incorrect Email and password")
+                            ToastUtil.error("Incorrect Email and password");
                           });
                       }}
                     >
@@ -100,7 +112,10 @@ export const Login = () => {
                           </div>
 
                           <div className="mt-3 d-grid">
-                            <button className="btn btn-primary btn-block" type="submit">
+                            <button
+                              className="btn btn-primary btn-block"
+                              type="submit"
+                            >
                               Log In
                             </button>
                           </div>
@@ -121,8 +136,8 @@ export const Login = () => {
               </Card>
               <div className="mt-5 text-center">
                 <p>
-                  © {new Date().getFullYear()} Lotus. Crafted with <i className="mdi mdi-heart text-danger" /> by{" "}
-                  {`<InXcode>`}
+                  © {new Date().getFullYear()} Lotus. Crafted with{" "}
+                  <i className="mdi mdi-heart text-danger" /> by {`<InXcode>`}
                 </p>
               </div>
             </Col>

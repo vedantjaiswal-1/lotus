@@ -7,20 +7,35 @@ connectDb();
 
 const handler = nextConnect();
 
-handler.get(
-  async (req: NextApiRequest, res: NextApiResponse, next: NextHandler) => {
-    try {
-      const transactions = await Transaction.find({
+handler.get(async (req: any, res: NextApiResponse, next: NextHandler) => {
+  try {
+    let filters: any = {};
+
+    let title = req.query.title;
+    let start = req.query.start;
+    let end = req.query.end;
+
+    if (title && start && end) {
+      filters = await Transaction.find({
+        $and: [
+          { date: { $gte: req.query.start, $lte: req.query.end } },
+          { title: req.query.title },
+        ],
+      }).sort({ _id: -1 });
+    } else if (title || start || end) {
+      filters = await Transaction.find({
         $or: [
           { date: { $gte: req.query.start, $lte: req.query.end } },
           { title: req.query.title },
         ],
       }).sort({ _id: -1 });
-      res.status(200).json(transactions);
-    } catch (error) {
-      res.status(500).json({ msg: "Server Error" });
     }
+
+    res.status(200).json(filters);
+  } catch (error) {
+    console.log("error: ", error);
+    res.status(500).json({ msg: "Server Error" });
   }
-);
+});
 
 export default handler;

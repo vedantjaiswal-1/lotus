@@ -8,7 +8,7 @@ import {
   Navbar,
   NavbarBrand,
   NavbarText,
-  UncontrolledDropdown
+  UncontrolledDropdown,
 } from "reactstrap";
 
 import AuthService from "../Services/AuthService/AuthService";
@@ -28,7 +28,13 @@ export const Header = () => {
   };
   return (
     <React.Fragment>
-      <Navbar color="white" expand="md" light fixed="top">
+      <Navbar
+        color="white"
+        expand="md"
+        light
+        fixed="top"
+        className="no-printme"
+      >
         <NavbarBrand href="/dashboard/">
           <h2>Lotus Inn</h2>
         </NavbarBrand>
@@ -36,12 +42,21 @@ export const Header = () => {
         <Nav>
           <NavbarText>
             <UncontrolledDropdown inNavbar nav>
-              <DropdownToggle caret nav suppressHydrationWarning className="text-primary">
+              <DropdownToggle
+                caret
+                nav
+                suppressHydrationWarning
+                className="text-primary"
+              >
                 {lng}
               </DropdownToggle>
               <DropdownMenu end>
-                <DropdownItem onClick={() => changeLanguageAction('en')}>English</DropdownItem>
-                <DropdownItem onClick={() => changeLanguageAction('मराठी')}>मराठी</DropdownItem>
+                <DropdownItem onClick={() => changeLanguageAction("en")}>
+                  English
+                </DropdownItem>
+                <DropdownItem onClick={() => changeLanguageAction("मराठी")}>
+                  मराठी
+                </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
           </NavbarText>
