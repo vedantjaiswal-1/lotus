@@ -16,7 +16,8 @@ const Home: NextPage = () => {
       <Helmet
         script={[
           {
-            src: "https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/6.7.96/fonts/materialdesignicons-webfont.woff2",
+            "src": "https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/6.7.96/fonts/materialdesignicons-webfont.woff2",
+            "type": "application/octet-stream"
           },
         ]}
       ></Helmet>
