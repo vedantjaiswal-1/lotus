@@ -67,6 +67,10 @@ export const Summary = ({
     fetchTransaction();
   }, []);
 
+  useEffect(() => {
+    fetchTransaction();
+  }, [transaction])
+
   const printInvoice = () => {
     window.print();
   };
