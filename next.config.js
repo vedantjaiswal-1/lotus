@@ -11,3 +11,4 @@ module.exports = {
     TOKEN_SECRET: "lotusinn"
   }
 };
+

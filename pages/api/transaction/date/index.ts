@@ -18,15 +18,15 @@ handler.get(async (req: any, res: NextApiResponse, next: NextHandler) => {
     if (title && start && end) {
       filters = await Transaction.find({
         $and: [
-          { date: { $gte: req.query.start, $lte: req.query.end } },
-          { title: req.query.title },
+          { date: { $gte: start, $lte: end } },
+          { title:title },
         ],
       }).sort({ _id: -1 });
     } else if (title || start || end) {
       filters = await Transaction.find({
         $or: [
-          { date: { $gte: req.query.start, $lte: req.query.end } },
-          { title: req.query.title },
+          { date: { $gte: start, $lte: end } },
+          { title: title },
         ],
       }).sort({ _id: -1 });
     }
