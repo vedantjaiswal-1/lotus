@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true
 };
-const isProd = process.env.NODE_ENV === 'production'
+
 module.exports = nextConfig;
 
 module.exports = {
@@ -12,7 +12,3 @@ module.exports = {
   }
 };
 
-module.exports = {
-  // Use the CDN in production and localhost for development.
-  assetPrefix: isProd ? 'https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/6.7.96/fonts/materialdesignicons-webfont.woff2' : '',
-}
